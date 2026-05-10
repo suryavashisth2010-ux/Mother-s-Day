@@ -97,28 +97,36 @@ body {
 
 /* Subtitles */
 #subtitle-layer {
-    align-items: flex-end;
-    padding-bottom: 12vh;
+    height: 35vh;
+    top: auto;
+    bottom: 0;
+    align-items: center;
+    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 70%, transparent 100%);
+    pointer-events: none;
+    z-index: 100;
 }
 
 .subtitle-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.2rem;
     pointer-events: auto;
+    width: 100%;
+    padding: 0 20px;
 }
 
 #subtitle-text {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-style: italic;
     color: var(--accent);
-    text-shadow: 0 0 20px rgba(255, 175, 189, 0.5);
-    max-width: 800px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+    max-width: 900px;
     text-align: center;
     opacity: 0;
     transition: opacity 1s ease;
+    line-height: 1.4;
 }
 
 .next-btn {
@@ -147,24 +155,6 @@ body {
     box-shadow: 0 0 20px var(--rose);
 }
 
-/* Memory Polaroid */
-.polaroid {
-    background: #fff;
-    padding: 15px 15px 60px 15px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    transform: rotate(-3deg);
-    transition: all 1s ease;
-    border-radius: 4px;
-    max-width: 400px;
-    width: 80%;
-    overflow: hidden;
-}
-
-.polaroid img {
-    width: 100%;
-    height: auto;
-    filter: sepia(0.2) contrast(1.1);
-}
 
 /* Final Message */
 .final-text {
@@ -256,8 +246,58 @@ body {
 }
 
 @media (max-width: 768px) {
-    .glow-text { font-size: 2.2rem; }
-    .glass-panel { padding: 2rem; }
-    #subtitle-text { font-size: 1.3rem; padding: 0 20px; }
-    .polaroid { max-width: 300px; }
+    .glow-text { 
+        font-size: 2.2rem; 
+        line-height: 1.2;
+    }
+    
+    .subtitle { 
+        font-size: 0.7rem; 
+        letter-spacing: 3px;
+        margin-bottom: 2rem;
+    }
+
+    .glass-panel { 
+        padding: 2rem;
+        border-radius: 25px;
+    }
+
+    #subtitle-layer {
+        height: 40vh;
+        padding-bottom: 5vh;
+    }
+
+    #subtitle-text { 
+        font-size: 1.4rem; 
+        padding: 0 15px; 
+    }
+
+    .polaroid { 
+        max-width: 85%;
+        padding: 10px 10px 40px 10px;
+    }
+
+    .next-btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.8rem;
+    }
+
+    .premium-btn {
+        padding: 1rem 2rem;
+        font-size: 0.85rem;
+    }
+
+    .final-text {
+        font-size: 1.1rem;
+    }
+
+    .letter-header {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .glow-text { font-size: 1.8rem; }
+    #subtitle-text { font-size: 1.2rem; }
+    .polaroid { max-width: 90%; }
 }
