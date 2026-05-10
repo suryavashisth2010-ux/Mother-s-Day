@@ -5,21 +5,21 @@ let mouseX = 0, mouseY = 0;
 const clock = new THREE.Clock();
 
 const timelineData = [
-    { text: "In the vastness of the universe...", cam: { z: 600 } },
-    { text: "One light shines brighter than all others.", cam: { z: 450, x: 50 } },
-    { text: "A light that nurtured my soul...", cam: { z: 500, x: -50, y: 30 } },
-    { text: "I remember the warmth of your embrace.", img: "memory1.png", cam: { z: 350, y: -20 } },
-    { text: "The joy of our walks under the sun.", img: "https://images.unsplash.com/photo-1544605949-50953186259c?auto=format&fit=crop&w=1000&q=80", cam: { z: 400, x: 80 } },
-    { text: "The wisdom you shared in quiet moments.", img: "https://images.unsplash.com/photo-1510154221590-ff63e90a136f?auto=format&fit=crop&w=1000&q=80", cam: { z: 400, x: -80, y: 50 } },
-    { text: "And the love that binds us forever.", img: "memory4.png", cam: { z: 300, y: 0 } },
-    { text: "Today, this heart beats for you.", cam: { z: 250 } },
-    { text: "Happy Mother's Day, Mom.", cam: { z: 200 } }
+    { text: "In the vastness of the universe...", cam: { z: 800, y: 100 } },
+    { text: "One light shines brighter than all others.", cam: { z: 500, x: 100, y: 50 } },
+    { text: "A light that nurtured my soul...", cam: { z: 600, x: -100, y: 80 } },
+    { text: "I remember the warmth of your embrace.", cam: { z: 400, y: 50 } },
+    { text: "The joy of our walks under the sun.", cam: { z: 450, x: 120, y: 100 } },
+    { text: "The wisdom you shared in quiet moments.", cam: { z: 450, x: -120, y: 100 } },
+    { text: "And the love that binds us forever.", cam: { z: 350, y: 80 } },
+    { text: "Today, this heart beats for you.", cam: { z: 300, y: 50 } },
+    { text: "Happy Mother's Day, Mom.", cam: { z: 250, y: 0 } }
 ];
 
 let currentStep = 0;
 
 function init() {
-    console.log("Initializing Interactive Journey...");
+    console.log("Initializing Cinematic Journey...");
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000000, 0.001);
 
@@ -47,8 +47,6 @@ function setupJourney() {
     const finalScreen = document.getElementById('final-screen');
     const subtitleLayer = document.getElementById('subtitle-layer');
     const subtitleText = document.getElementById('subtitle-text');
-    const memoryLayer = document.getElementById('memory-layer');
-    const memoryImg = document.getElementById('memory-img');
     const progressContainer = document.getElementById('progress-container');
     const progressBar = document.getElementById('progress-bar');
 
@@ -70,12 +68,18 @@ function setupJourney() {
         gsap.to(progressBar, { width: `${((currentStep + 1) / timelineData.length) * 100}%`, duration: 1 });
 
         // Camera Move
+        const isMobile = window.innerWidth < 768;
+        const mobileFactor = isMobile ? 1.5 : 1.0;
+        
         gsap.to(camera.position, { 
-            x: data.cam.x || 0, 
-            y: data.cam.y || 0, 
-            z: data.cam.z || 400, 
+            x: (data.cam.x || 0) * (isMobile ? 0.5 : 1), 
+            y: (data.cam.y || 0) * (isMobile ? 0.8 : 1), 
+            z: (data.cam.z || 400) * mobileFactor, 
             duration: 3, 
-            ease: "power2.inOut" 
+            ease: "power2.inOut",
+            onUpdate: () => {
+                camera.lookAt(0, 0, 0); // Center the heart again
+            }
         });
 
         // Text Reveal
@@ -87,18 +91,8 @@ function setupJourney() {
             setTimeout(() => {
                 nextBtn.classList.remove('hidden');
                 nextBtn.classList.add('visible');
-            }, 2000);
+            }, 1500);
         }});
-
-        // Memory Reveal
-        if (data.img) {
-            gsap.to(memoryLayer, { opacity: 0, duration: 0.5, onComplete: () => {
-                memoryImg.src = data.img;
-                gsap.to(memoryLayer, { opacity: 1, duration: 1 });
-            }});
-        } else {
-            gsap.to(memoryLayer, { opacity: 0, duration: 0.5 });
-        }
 
         currentStep++;
     }
@@ -197,6 +191,7 @@ function createHeart() {
     });
 
     heartParticles = new THREE.Points(geometry, material);
+    heartParticles.position.y = 120; // Positioned for the upper zone
     scene.add(heartParticles);
 }
 
